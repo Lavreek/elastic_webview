@@ -1,0 +1,38 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.container{
+    width: 100vw;
+    height: calc(100vh);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-container{
+    position: relative;
+}
+
+.suggestions{
+    display: none;
+    padding: 5px 2px;
+    border-radius: 4px;
+    position: absolute;
+    width: 100%;
+    top: 30px;
+    -webkit-box-shadow: 0 3px 10px 4px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 0 3px 10px 4px rgba(34, 60, 80, 0.2);
+    box-shadow: 0 3px 10px 4px rgba(34, 60, 80, 0.2);
+}
+
+.suggest-item{
+    color: #000000;
+    text-decoration: underline;
+    display: block;
+}
+
+.main-input{
+
+}
