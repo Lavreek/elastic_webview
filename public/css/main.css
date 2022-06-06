@@ -1,3 +1,14 @@
+@font-face {
+    font-family: "DM Sans"; 
+    src: url("/assets/fonts/DMSans-Medium.woff2") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+.search-input:focus {
+    box-shadow: none;
+}
+
 .search-input-main::placeholder {
     color: #0089C3;
     font-size: 20px;
@@ -11,7 +22,7 @@
 
 .search-suggest {
     position: absolute;
-    width: 74%;
+    width: 100%;
     margin-top: 6%;
     display: block;
     margin-left: 1%;    
@@ -24,8 +35,9 @@
 }
 
 .home-suggest-support {
-    margin-left: 1px;
-    margin-top: -1%;
+    /*margin-left: 1px;*/
+    /*margin-top: -1%;*/
+    position: absolute; margin-top: 4%; margin-left: 0px; width: 85%;
 }
 
 .suggestions {

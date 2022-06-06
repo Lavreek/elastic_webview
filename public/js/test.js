@@ -35,8 +35,6 @@ async function showSuggestions() {
     const suggests_response = await getSuggests( search_value );
     const suggests = JSON.parse(await suggests_response.text());
 
-    // const suggests = JSON.parse(await suggests_response.text()).suggests;
-
     clearSuggests();
 
     if (suggests.length !== 0) {
@@ -48,14 +46,13 @@ async function showSuggestions() {
 
                 suggest_div.classList.add('suggest-div');
 
-                    // suggest_HTML.setAttribute('href', '');
                 suggest_HTML.classList.add(suggestItemClass);
                 suggest_highlight.classList.add(HighlightedSuggestItemClass);
                     
                 split = suggest.highlighted.split('<highlight>');
 
-                suggest_highlight.innerText = split[1]; //suggest.text;
-                suggest_HTML.innerText = split[0]; //suggest.text;
+                suggest_highlight.innerText = split[1];
+                suggest_HTML.innerText = split[0];
 
                 suggest_HTML.addEventListener('click', function() { document.getElementById('suggest').innerHTML = ""; })
                     
@@ -67,10 +64,7 @@ async function showSuggestions() {
         }
 
         suggestions_container.style.display = 'block';
-        
-
     }
-
 }
 
 function clearSuggests(){
