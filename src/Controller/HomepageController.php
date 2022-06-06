@@ -81,8 +81,8 @@ class HomepageController extends AbstractController
         );
     }
 
-    #[Route('/search', name: 'app_search')]
-    public function search(Request $request): JsonResponse
+    #[Route('/search_hints', name: 'app_search')]
+    public function search_hints(Request $request): JsonResponse
     {
         if (!empty($request->toArray()))
         {
@@ -92,6 +92,20 @@ class HomepageController extends AbstractController
                 return new JsonResponse($items['suggest']['phrase#song-suggest'][0]['options']);
             else
                 return new JsonResponse($items['suggest']['phrase#song-suggest']);
+        }
+    }
+
+    #[Route('/search', name: 'app_search')]
+    public function search(Request $request): JsonResponse
+    {
+        if (!empty($request->toArray()))
+        {
+            $items = $this->get_highlight($request->toArray()['search']);
+
+            if (!empty($items['suggest']['phrase#highlight-suggest']))
+                return new JsonResponse($items['suggest']['phrase#highlight-suggest']);
+            else
+                return new JsonResponse($items['suggest']['phrase#highlight-suggest']);
         }
     }
 
@@ -154,18 +168,34 @@ class HomepageController extends AbstractController
 
         $elastic_content_array = [];
 
+        $rep = ["\t", "\r", "\n", ":", "•"];
+
+        for ($i = 0; $i < 21; $i++)
+        { 
+            static $is = "\u0000";
+            array_push($rep, $is);
+            $is++;
+        }
+
         foreach ($text as $key => $value) {
             if (json_encode($value)) // test string encode
-                array_push($elastic_content_array, str_replace(["\t", "\r", "\n", "\""], " ", $value));
+            {
+                if (!empty($value))
+                {
+                    $json = json_encode($value);
+                    $json = str_replace($rep, " ", $json);
+                    array_push($elastic_content_array, json_decode($json));
+                }
+            }
         }
 
         $response = $this->push_pdf( 
             [
-                'file-name' => $file->getClientOriginalName(),
+                'file-name' => explode(".pdf", $file->getClientOriginalName())[0],
                 'file-url' => $host.$upload,
-                'file-size' => $file->getMaxFilesize(),
+                'file-size' => $_FILES['download']['size'],//filesize($file),
             ],
-            implode(" ", $elastic_content_array)
+            $elastic_content_array // implode(" ", $elastic_content_array)
         );
 
         // if (file_exists($file))
@@ -177,16 +207,16 @@ class HomepageController extends AbstractController
             return new JsonResponse(['file' => $filename, 'message' => 'upload error.']);
     }
 
-    public function push_pdf(array $file, string $text) {
+    public function push_pdf(array $file, array $elastic_content) {
 
         $client = HttpClient::create();
 
         $response = $client->request('POST', 'http://localhost:9200/catalogs/_doc', [
             'auth_basic' => ['elastic', '123123'],
             'json' => [ 
-                'suggest-completion' => $text,
-                'suggest-hints' => $text,
-                'suggest-text-content' => $text,
+                'suggest-completion' => $elastic_content,
+                'suggest-hints' => implode(" ", $elastic_content),
+                'suggest-text-content' => implode(" ", $elastic_content),
                 'file-name' => $file['file-name'],
                 'file-url' => $file['file-url'],
                 'file-size' => $file['file-size']           
@@ -196,21 +226,25 @@ class HomepageController extends AbstractController
         return $response;
     }
 
-    public function get_catalog(array $select_keys)
+    public function get_highlight(string $text)
     {
         $client = HttpClient::create();
 
         $response = $client->request('POST', 'http://localhost:9200/catalogs/_search?typed_keys', [
             'auth_basic' => ['elastic', '123123'],
-            'json' => [ 
-                '_source' => [
-                    'file-name'
-                ],
-                'query' => [
-                    'match' => [
-                        "suggest-text-content" => implode(" ", $select_keys)
+            'json' => [
+                "suggest" => [
+                    "highlight-suggest" => [
+                        "prefix" => $text, // Поиск на основании совпадения параметра "score"
+                        "phrase" => [
+                            "field" => "suggest-hints",
+                            "highlight" => [
+                                "pre_tag" => "<highlight>",
+                                "post_tag" => "<highlight>"
+                            ]
+                        ]
                     ]
-                ]
+                ] 
             ]
         ]);
 

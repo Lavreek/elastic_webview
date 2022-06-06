@@ -1,24 +1,41 @@
 <div class="l-head">
         <div class="wc">
-            <div class="l-head-top">
-                <form action='./search/result' method='POST'>
-                    <div class="l-head-s">
+            <div class="l-head-top row">
+                    <div class="col col-md-8">
+                        <form action='./search/result' method='POST'>
+
+                        <div class="input-group input-group-lg mb-3 p-3" style="border: 0px;">
+                            <input placeholder="Введите название продукта, бренда или артикул" type="text" name="state[]" id="searchInput"class="form-control search-input search-input-main" style="border: 0px; min-width: 500px;">
+                            <button class="btn btn-primary px-5 btn-search-h" type='submit' style="border-radius: 8px 8px 8px 8px; margin-left: -2%;">Найти</button>
+                            <div class="home-suggest">
+                                <div class="suggestions home-suggest-support" id='suggest'></div>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                    <div class="col col-md-4 py-3">
+                        <button class="btn btn-primary btn-lg" style="float: right;">Обратная связь</button>
+                    </div>
+
+
+                    <!-- <div class="l-head-s">
                         <div class="l-head-s-input">
                             <input class="search-input" placeholder="Введите название продукта, бренда или артикул" type="text" name="state[]">
-                            <div class="suggestions" id='suggest'></div>
+                            <div class="suggestions home-suggest" id='suggest'></div>
                         </div>
                         <div class="l-head-s-but">
                             <div>
                                 <button class='btn btn-secondary btn-search' type='submit'>Найти</button>                            
                             </div>
                         </div>
+                    </div> -->
+                <!-- <div class="col-md-4">
+                    <div class="">
+                        <div class="btn btn-primary">
+                            Обратная связь
+                        </div>
                     </div>
-                </form>
-                <div class="feedback">
-                    <div class="button">
-                    Обратная связь
-                    </div>
-                </div>
+                </div> -->
             </div>
             <div class="l-head-content">
                 <div class="l-head-content-logo">

@@ -6,8 +6,9 @@ const suggestions_container = document.querySelector('.suggestions');
 
 const suggestions_event = document.getElementsByClassName('suggest-item');
 
-
 const suggestItemClass = 'suggest-item';
+const HighlightedSuggestItemClass = 'suggest-item-highlighted';
+
 
 search_input.addEventListener('input', debounce(showSuggestions, 200) );
 
@@ -19,7 +20,12 @@ document.addEventListener('click', (event) => {
         event.preventDefault();
         handleSuggestionSelect(target)
     }
+    if (target.classList.contains(HighlightedSuggestItemClass)) {
+        event.preventDefault();
+        handleHighlightedSuggestionSelect(target)
+    }
 });
+
 
 async function showSuggestions() {
 
@@ -34,24 +40,35 @@ async function showSuggestions() {
     clearSuggests();
 
     if (suggests.length !== 0) {
+        if (suggests[0].options) {
+            suggests[0].options.forEach( suggest => {
+                let suggest_div = document.createElement("div");
+                let suggest_HTML = document.createElement("span");
+                let suggest_highlight = document.createElement("b");
 
-        suggests.forEach( suggest => {
-            let suggest_div = document.createElement("div");
-            suggest_div.classList.add('suggest-div');
+                suggest_div.classList.add('suggest-div');
 
-            let suggest_HTML = document.createElement("a");
-            suggest_HTML.setAttribute('href', '')
-            suggest_HTML.classList.add(suggestItemClass);
-            suggest_HTML.innerText = suggest.text;
-            suggest_HTML.addEventListener('click', function() { document.getElementById('suggest').innerHTML = ""; })
-            
-            suggest_div.appendChild(suggest_HTML);
-            
-            suggestions_container.appendChild(suggest_div);
+                    // suggest_HTML.setAttribute('href', '');
+                suggest_HTML.classList.add(suggestItemClass);
+                suggest_highlight.classList.add(HighlightedSuggestItemClass);
+                    
+                split = suggest.highlighted.split('<highlight>');
 
-        });
+                suggest_highlight.innerText = split[1]; //suggest.text;
+                suggest_HTML.innerText = split[0]; //suggest.text;
+
+                suggest_HTML.addEventListener('click', function() { document.getElementById('suggest').innerHTML = ""; })
+                    
+                suggest_HTML.appendChild(suggest_highlight);
+
+                suggest_div.appendChild(suggest_HTML);
+                suggestions_container.appendChild(suggest_div);
+            });
+        }
 
         suggestions_container.style.display = 'block';
+        
+
     }
 
 }
@@ -61,9 +78,13 @@ function clearSuggests(){
     suggestions_container.replaceChildren();
 }
 
-function handleSuggestionSelect(suggestionElement){
-    search_input.value = suggestionElement.text;
+function handleSuggestionSelect(suggestionElement) {
+    search_input.value = suggestionElement.innerText;
     // search_form.submit();
+}
+
+function handleHighlightedSuggestionSelect(suggestionElement) {
+    search_input.value = suggestionElement.parentElement.innerText;
 }
 
 async function getSuggests(text) {

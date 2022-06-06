@@ -2,51 +2,70 @@
 	<div style="background: #373636;">
 		<div class="row justify-content-center">
 			<div class="col-md-auto">
-				<form action='./search/result' method='POST'>
-					<label for="searchInput1" class="" style="color: white;">Поиск</label>
+				<form action='/search/result' method='POST'>
+					<h5 style="color: white;">Поиск</h5>
 					<div class="input-group mb-3 p-3" style="border: 0px;">
-						<input placeholder="Введите название продукта, бренда или артикул" type="text" name="state[]" id="searchInput1"class="form-control search-input" style="border: 0px; min-width: 500px;">
-						<label for="searchInput1" class="input-group-text bg-primary" style="border: 0px;"><a class="btn btn-primary px-5" href="">Найти</a></label>
+						<input placeholder="Введите название продукта, бренда или артикул" type="text" name="state[]" id="searchInput"class="form-control search-input" style="border: 0px; min-width: 500px;">
+						<button class="btn btn-primary px-5" type='submit' style="border-radius: 8px 8px 8px 8px; margin-left: -2%;">Найти</button>
+						<div class="search-suggest">
+							<div class="suggestions " id='suggest'></div>
+						</div>
 					</div>
-					
-					
-
 				</form>
-
 			</div>
 		</div>
 	</div>
-	<div class="container-sm" style="">
-		<div class="row justify-content-center">
-			<div class="col-md-auto">
-				<div class="suggestions px-1"  id='suggest'></div>				
-			</div>
+	<div class="p-5"></div>
+	<div class="bg-light">
+		<div class="container p-3 text-center">
+			<h2>Результаты поиска</h2>
 		</div>
-	</div>
-	
-	<div class="">
-		<div>
-				
-			
-					<!-- <form action='./search/result' method='POST'>
-						<div class="l-head-s">
-							<div class="col-md-auto">
-								<div class="l-head-s-input">
-									<label for="searchInput" >Поиск</label>
-									<div class="input-group mb-3" id="searchInput">
-										<input class="search-input"  placeholder="Введите название продукта, бренда или артикул" type="text" name="state[]">
-										<div class="suggestions" id='suggest'></div>
 
-									</div>
-								</div>
+		{% for item in catalog_items %}
+		<div class="py-5">
+			<div class="bg-primary text-center py-2" style="width: 40%; border-radius: 0 10px 10px 0;">
+				<span class="catalog-header">
+					{{ item._source['file-name'] }}
+				</span>
+			</div>
+			<div class="container-fluid p-5 row justify-content-center" style="margin-left: 2%; ">
+				<div class="col col-md-8" style="margin-right: 5%;">
+					<label class="catalog-text">
+						<b>
+							{{ item._source['suggest-hints'] }}
+						</b>
+					</label>
+				</div>
+				<div class="col col-md-2">
+					<div class="mb-3" >
+						<div class="row g-0" style="margin-top: 25%;">
+							<div class="col-md-4">
+								<a href="{{ item._source['file-url'] }}" download>
+									<svg class="catalog-image" xmlns="http://www.w3.org/2000/svg" width="59" fill="#0288C2" class="bi bi-filetype-pdf" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM1.6 11.85H0v3.999h.791v-1.342h.803c.287 0 .531-.057.732-.173.203-.117.358-.275.463-.474a1.42 1.42 0 0 0 .161-.677c0-.25-.053-.476-.158-.677a1.176 1.176 0 0 0-.46-.477c-.2-.12-.443-.179-.732-.179Zm.545 1.333a.795.795 0 0 1-.085.38.574.574 0 0 1-.238.241.794.794 0 0 1-.375.082H.788V12.48h.66c.218 0 .389.06.512.181.123.122.185.296.185.522Zm1.217-1.333v3.999h1.46c.401 0 .734-.08.998-.237a1.45 1.45 0 0 0 .595-.689c.13-.3.196-.662.196-1.084 0-.42-.065-.778-.196-1.075a1.426 1.426 0 0 0-.589-.68c-.264-.156-.599-.234-1.005-.234H3.362Zm.791.645h.563c.248 0 .45.05.609.152a.89.89 0 0 1 .354.454c.079.201.118.452.118.753a2.3 2.3 0 0 1-.068.592 1.14 1.14 0 0 1-.196.422.8.8 0 0 1-.334.252 1.298 1.298 0 0 1-.483.082h-.563v-2.707Zm3.743 1.763v1.591h-.79V11.85h2.548v.653H7.896v1.117h1.606v.638H7.896Z"/> </svg>
+								</a>
+								<!-- <img class="catalog-image" src="./assets/file-type-pdf.svg" width="59px"  alt="..."> -->
+								
 							</div>
-							<div class="col-md-auto" style="text-align: left;">
-								<div class="l-head-s-but">
-									<div>
-									</div>
+							<div class="col-md-8">
+								<div class="card-body">
+									<h5 class="card-text">
+										<b>
+											<a class="catalog-filename" href="{{ item._source['file-url'] }}">{{ item._source['file-name'] }}</a>
+										</b>
+									</h5>
+									<p class="card-text">
+										<b>
+											<a class="catalog-fileurl" href="{{ item._source['file-url'] }}" download>Скачать файл ({{ (item._source['file-size']/1024/1024)|number_format(2) }} мб)</a>
+										</b>
+									</p>
 								</div>
 							</div>
 						</div>
-					</form> -->
-	    </div>
+					</div>
+				</div>
+			</div>
+		</div>
+   		{% endfor %}
 	</div>
+</div>
+	

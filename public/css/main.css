@@ -1,8 +1,76 @@
+.search-input-main::placeholder {
+    color: #0089C3;
+    font-size: 20px;
+}
+
+.btn-search-h:hover {
+    transition: .5s;
+    border: 1px solid rgba(1, 1, 1, .0);
+    background: #5828B8;
+}
+
+.search-suggest {
+    position: absolute;
+    width: 74%;
+    margin-top: 6%;
+    display: block;
+    margin-left: 1%;    
+}
+
+.home-suggest {
+    margin-left: 5%;
+    width: 85%;
+    border-radius: 0 0 8px 8px;
+}
+
+.home-suggest-support {
+    margin-left: 1px;
+    margin-top: -1%;
+}
+
+.suggestions {
+    background: white;
+    height: auto;
+}
+
+.catalog-header {
+    color:white;
+    font-weight:bold;
+
+    font-size: 24px;
+}
+
+.catalog-text {
+    font-style: normal;
+    font-family: DM Sans;
+
+    overflow:hidden;
+    display:inline-block;
+    text-overflow: ellipsis;
+    max-height: 240px;
+}
+
+.catalog-filename, .catalog-fileurl {
+    color: #0089C3;
+    font-style: normal;
+    font-family: DM Sans;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 24px;
+    text-decoration: none;
+}
+
+.catalog-filename:hover, .catalog-fileurl:hover, .catalog-image:hover {
+    transition: .5s;
+    fill: #5828B8;
+    color: #5828B8;
+}
+
 body{
-    
     margin: 0px;
     letter-spacing: 0.72px;
 }
+
 .meny{
     background: #373636;
     height: 106px;
@@ -48,13 +116,13 @@ body{
     font-size: 17px;
     line-height: 24px;
     color: #FFFFFF;
+}    
 
-
-}        
 .meny-contact{
     text-align: right;
     margin: 28px 0;
 }
+
 .l-head{
     background-image: url(../img/Rectangle.png);
     min-height: 1100px;
@@ -81,6 +149,10 @@ body{
     
 }
 .suggest-div {
+    cursor: pointer;
+    border-bottom: 1px solid rgba(220, 220, 220, .5);
+
+
     padding: 14px;
 }
 
@@ -94,12 +166,7 @@ body{
 }
 
 
-.suggestions {
-    background: white;
-    width: 39vw;
-    height: auto;
-    border-radius: 0px 0px 15px 15px;
-}
+
 
 .l-head-s-input select {
     width: 30vw;
@@ -159,14 +226,6 @@ input::placeholder {
     font-weight: 400;
     font-size: 24px;
     color: #FFFFFF;
-}
-
-
-
-.btn-search:hover {
-    transition: .5s;
-
-    background: #5828B8;
 }
 
 .feedback{
