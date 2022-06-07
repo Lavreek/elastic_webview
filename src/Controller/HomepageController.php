@@ -106,13 +106,13 @@ class HomepageController extends AbstractController
 
         $pdf_obj = $parser->parseFile(".".$upload); // return data about pdf file
         
-        $text = explode(" ", $pdf_obj->getText());
+        $text = explode("\n", $pdf_obj->getText());
 
         $elastic_content_array = [];
 
-        $rep = ["\t", "\r", "\n", ":", "•"];
+        $rep = [":", "\u2022", "\t"];
 
-        for ($i = 0; $i < 21; $i++)
+        for ($i = 0; $i < 20; $i++)
         { 
             static $is = "\u0000";
             array_push($rep, $is);
@@ -125,7 +125,7 @@ class HomepageController extends AbstractController
                 if (!empty($value))
                 {
                     $json = json_encode($value);
-                    $json = str_replace($rep, " ", $json);
+                    $json = str_replace($rep, "\u0020", $json);
                     array_push($elastic_content_array, json_decode($json));
                 }
             }
