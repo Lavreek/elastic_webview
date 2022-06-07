@@ -25,8 +25,8 @@ class HomepageController extends AbstractController
     private $targetDirectory;
     private $slugger;
 
-    #[Route('/old', name: 'app_homepage1')]
-    public function index1(Request $request): Response
+    #[Route('/preload', name: 'app_preload')]
+    public function preload(Request $request): Response
     {
         return new Response (
             "<!DOCTYPE html>
@@ -37,15 +37,10 @@ class HomepageController extends AbstractController
                     <title>learn select2</title>
                     <link rel=\"icon\" href=\"./assets/favicon.ico\" type=\"image/x-icon\">
                     <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor\" crossorigin=\"anonymous\">
-                    <link href=\"https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css\" rel=\"stylesheet\" />
-                    <link href=\"./assets/test.css\" rel=\"stylesheet\" />
                     <style>
                         .container-div {
                             margin-left: 33%;
                             margin-right: 33%;
-                        }
-                        form + form {
-                            margin-top: 5%;
                         }
                         div + div {
                             margin-top: 2%;
@@ -54,34 +49,21 @@ class HomepageController extends AbstractController
                 </head>
                 <body class='p-3'>
                     <div class='container-div'>
-                        <form action='./choose_catalog' method='POST'>
-                            <div>
-                                <select class=\"form-control js-example-basic-multiple js-states\" name=\"state[]\" style='width:100%;' multiple></select>
-                            </div>
-                            <div style='width: 100%; text-align:center;'>
-                                <button class='btn btn-secondary' onClick='checkselected()' type='submit'>Найти</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class='container-div'>
-                        <form action='./download' method='POST' enctype=\"multipart/form-data\">
+                        <form action='./api/download' method='POST' enctype=\"multipart/form-data\">
                             <div>
                                 <input class='form-control' type='file' name='download'>
                             </div>
                             <div style='width: 100%; text-align:center;'>
-                                <button class='btn btn-secondary' onClick='checkselected()' type='submit'>Загрузить</button>
+                                <button class='btn btn-secondary' type='submit'>Загрузить</button>
                             </div>
                         </form>
                     </div>
-                    <script src=\"./assets/jquery-3.6.0.min.js\"></script>
-                    <script src=\"https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.full.js\"></script>
-                    <script src=\"./assets/test.js\"></script>
                 </body>
             </html>"
         );
     }
 
-    #[Route('/search_hints', name: 'app_search')]
+    #[Route('/api/search/hints', name: 'app_search_hints')]
     public function search_hints(Request $request): JsonResponse
     {
         if (!empty($request->toArray()))
@@ -95,7 +77,7 @@ class HomepageController extends AbstractController
         }
     }
 
-    #[Route('/search', name: 'app_search')]
+    #[Route('/api/search/highlight', name: 'app_search_highlight')]
     public function search(Request $request): JsonResponse
     {
         if (!empty($request->toArray()))
@@ -109,47 +91,7 @@ class HomepageController extends AbstractController
         }
     }
 
-    #[Route('/choose_catalog', name: 'app_choose_catalog')]
-    public function choose_catalog(Request $request): Response
-    {   
-
-        if (!empty($request->request->all()['state']))
-        {
-            $items = $this->get_catalog($request->request->all()['state']);
-
-            $text = "";
-
-            foreach ($items['hits']['hits'] as $value) {
-                $link = $value['_source']['file-name'];
-                $text .= "<div><a href='".$link."' download>".explode("/uploads/", $link)[1]."</a></div>";
-            }
-
-            return new Response (
-                "<!DOCTYPE html>
-                <html>
-                    <head>
-                        <meta charset=\"utf-8\">
-                        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
-                        <title>learn select2</title>
-                        <link rel=\"icon\" href=\"./assets/favicon.ico\" type=\"image/x-icon\">
-                        <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor\" crossorigin=\"anonymous\">
-                        <link href=\"https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css\" rel=\"stylesheet\" />
-                        <style>
-                            div + div {
-                                margin-top: 10px;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        $text
-                    </body>
-                </html>"
-            );
-        }
-        return new JsonResponse('error');
-    }
-
-    #[Route('/download', name: 'app_download')]
+    #[Route('/api/download', name: 'app_download')]
     public function download_file(Request $request, FileUploader $fileUploader): JsonResponse
     {
         $parser = new \Smalot\PdfParser\Parser();
@@ -193,14 +135,11 @@ class HomepageController extends AbstractController
             [
                 'file-name' => explode(".pdf", $file->getClientOriginalName())[0],
                 'file-url' => $host.$upload,
-                'file-size' => $_FILES['download']['size'],//filesize($file),
+                'file-size' => $_FILES['download']['size'], // filesize($file),
             ],
             $elastic_content_array // implode(" ", $elastic_content_array)
         );
 
-        // if (file_exists($file))
-            // unlink($file);
-        
         if ($response)
             return new JsonResponse(['file' => $filename, 'message' => 'upload successesful!']);
         else
@@ -251,7 +190,7 @@ class HomepageController extends AbstractController
         return $response->toArray();
     }
 
-    public function get_hint(string $text)
+    public function get_hint(string $text) // Old
     {
         $client = HttpClient::create();
 

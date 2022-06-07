@@ -1,12 +1,47 @@
 @font-face {
-    font-family: "DM Sans"; 
-    src: url("/assets/fonts/DMSans-Medium.woff2") format("truetype");
+    font-family: "Inter"; 
+    src: url("/assets/fonts/Inter/static/Inter-Regular.ttf") format("truetype");
     font-style: normal;
     font-weight: normal;
 }
 
+.main-background {
+    background: #373636;
+}
+
+.input-group {
+    border: 0px;
+}
+
+.btn-search-border {
+    border-radius: 0 8px 0 0!important;
+}
+
+.btn-search-border:hover {
+    transition: .5s;
+    border: 1px solid rgba(0, 0, 0, .0);
+    background: #5828B8;
+}
+
+.suggest-absolute {
+    margin-top: -1px!important;
+    margin-left: .2px!important;
+    border: 0px;
+    border-bottom: 1px solid rgba(220, 220, 220, .75);
+    width: 100%;
+}
+
+.search-input {
+    border-radius: 8px 0 0 0!important;
+    border: 0px;
+}
+
 .search-input:focus {
     box-shadow: none;
+}
+
+.search-input-main {
+    min-width: 500px;
 }
 
 .search-input-main::placeholder {
@@ -14,11 +49,7 @@
     font-size: 20px;
 }
 
-.btn-search-h:hover {
-    transition: .5s;
-    border: 1px solid rgba(1, 1, 1, .0);
-    background: #5828B8;
-}
+
 
 .search-suggest {
     position: absolute;
@@ -54,7 +85,7 @@
 
 .catalog-text {
     font-style: normal;
-    font-family: DM Sans;
+    font-family: Inter;
 
     overflow:hidden;
     display:inline-block;
@@ -65,7 +96,7 @@
 .catalog-filename, .catalog-fileurl {
     color: #0089C3;
     font-style: normal;
-    font-family: DM Sans;
+    font-family: Inter;
     font-weight: 400;
     font-size: 17px;
     line-height: 24px;

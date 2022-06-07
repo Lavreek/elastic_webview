@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" style="width: 100%; height: 100%;">
+<html lang="ru" class="w-100 h-100">
     <head>
         <link rel="icon" href="./assets/favicon.ico" type="image/x-icon">
         <base href='{{ path('app_homepage') }}'>
@@ -10,21 +10,12 @@
         
         {% block stylesheets %}
             {#{ encore_entry_link_tags('app') }#}
-            <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
             <link rel="stylesheet" href="./css/main.css">
-
-            <style type="text/css">
-                .select2-container .select2-search--inline .select2-search__field {
-                    height: 24px;
-                }
-            </style>
-
-
         {% endblock %}
 
     </head>
-    <body style="width: 100%; height: 100%;">
+    <body class="w-100 h-100">
         {% block header %} {{ include('header.html') }} {% endblock %}
 
         {% block body %}{% endblock %}
@@ -36,10 +27,7 @@
             {#{ encore_entry_script_tags('app') }#}
         
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-            <script src='/js/jquery-3.6.0.min.js'></script> 
-            <!-- <script src='https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.full.js'></script> -->
-            <!-- <script src='https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/ru.js'></script> -->
-
+            <!-- <script src='/js/jquery-3.6.0.min.js'></script>  -->
             <script src='./js/test.js'></script>
         {% endblock %}
     </body>

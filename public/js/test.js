@@ -1,4 +1,4 @@
-const search_api_suggests_url = 'http://localhost:8000/search';
+const search_api_suggests_url = 'http://localhost:8000/api/search/highlight';
 
 const search_form = document.querySelector('form');
 const search_input = document.querySelector('.search-input');
@@ -6,12 +6,11 @@ const suggestions_container = document.querySelector('.suggestions');
 
 const suggestions_event = document.getElementsByClassName('suggest-item');
 
+const suggestDivClass = 'suggest-div';
 const suggestItemClass = 'suggest-item';
 const HighlightedSuggestItemClass = 'suggest-item-highlighted';
 
-
 search_input.addEventListener('input', debounce(showSuggestions, 200) );
-
 
 document.addEventListener('click', (event) => {
 
@@ -25,7 +24,6 @@ document.addEventListener('click', (event) => {
         handleHighlightedSuggestionSelect(target)
     }
 });
-
 
 async function showSuggestions() {
 
@@ -41,24 +39,23 @@ async function showSuggestions() {
         if (suggests[0].options) {
             suggests[0].options.forEach( suggest => {
                 let suggest_div = document.createElement("div");
-                let suggest_HTML = document.createElement("span");
+                let suggest_span = document.createElement("span");
                 let suggest_highlight = document.createElement("b");
 
-                suggest_div.classList.add('suggest-div');
-
-                suggest_HTML.classList.add(suggestItemClass);
+                suggest_div.classList.add(suggestDivClass);
+                suggest_span.classList.add(suggestItemClass);
                 suggest_highlight.classList.add(HighlightedSuggestItemClass);
-                    
+
                 split = suggest.highlighted.split('<highlight>');
 
                 suggest_highlight.innerText = split[1];
-                suggest_HTML.innerText = split[0];
+                suggest_span.innerText = split[0];
 
-                suggest_HTML.addEventListener('click', function() { document.getElementById('suggest').innerHTML = ""; })
+                suggest_span.addEventListener('click', function() { document.getElementById('suggest').innerHTML = ""; })
                     
-                suggest_HTML.appendChild(suggest_highlight);
+                suggest_span.appendChild(suggest_highlight);
+                suggest_div.appendChild(suggest_span);
 
-                suggest_div.appendChild(suggest_HTML);
                 suggestions_container.appendChild(suggest_div);
             });
         }
