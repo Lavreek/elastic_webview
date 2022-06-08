@@ -110,9 +110,9 @@ class HomepageController extends AbstractController
 
         $elastic_content_array = [];
 
-        $rep = [":", "\u2022", "\t"];
+        $rep = ["\u003A", "\u2022", "\u000b", "\u25a0", "\u00005", "\u001e"];
 
-        for ($i = 0; $i < 20; $i++)
+        for ($i = 0; $i < 21; $i++)
         { 
             static $is = "\u0000";
             array_push($rep, $is);
@@ -125,11 +125,11 @@ class HomepageController extends AbstractController
                 if (!empty($value))
                 {
                     $json = json_encode($value);
-                    $json = str_replace($rep, "\u0020", $json);
-                    array_push($elastic_content_array, json_decode($json));
+                    $json = str_replace($rep, " zebl ", $json);
+                    array_push($elastic_content_array, str_replace("zebl", "", json_decode($json)));
                 }
             }
-        }
+        }  
 
         $response = $this->push_pdf( 
             [
@@ -154,6 +154,8 @@ class HomepageController extends AbstractController
             'auth_basic' => ['elastic', '123123'],
             'json' => [ 
                 'suggest-completion' => $elastic_content,
+                'suggest-keywords' => $elastic_content,
+                'suggest-string' => $elastic_content,
                 'suggest-hints' => implode(" ", $elastic_content),
                 'suggest-text-content' => implode(" ", $elastic_content),
                 'file-name' => $file['file-name'],
